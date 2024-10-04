@@ -1,0 +1,43 @@
+{
+  "name": "estratos/domainname-api",
+  "type": "symfony-bundle",
+  "description": "Domain Name REST API Client for Symfony Framework",
+  "keywords": ["php", "symfony", "domainname api", "domain registrar"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Julio Rodriguez",
+      "email": "julio.stratos@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Estratos\\DomainNameApi\\": "src/" }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      
+    }
+  },
+  "require-dev": {
+    "symfony/http-kernel": "^4.0"   
+    
+  },
+  "require": {
+    "php": ">=8.1",
+    "symfony/config": "^7.1",
+    "symfony/dependency-injection": "^7.1",
+    "symfony/yaml": "^7.1"
+    
+  },
+
+  "repositories": [
+    {
+        "type": "git",
+        "url": "https://github.com/estratos/domainname-api.git"
+    }],
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
