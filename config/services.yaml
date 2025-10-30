@@ -3,13 +3,12 @@ services:
     autowire: true
     autoconfigure: true
 
-  # Servicio principal del cliente API
+  # Servicio principal del cliente API - NOMBRE CORREGIDO
   Estratos\DomainNameApi\Service\DomainNameApiClient:
     arguments:
-      $username: ''
-      $password: ''
-      $testMode: false
-      $config: []
+      $username: '%domainname_api.username%'
+      $password: '%domainname_api.password%'
+      $testMode: '%domainname_api.test_mode%'
     public: true
 
   # Alias para facilitar el uso
@@ -23,10 +22,5 @@ services:
 
   # Registrar comandos de consola
   Estratos\DomainNameApi\Command\:
-    resource: '%kernel.project_dir%/vendor/estratos/domainname-api/src/Command'
+    resource: '../src/Command'
     tags: ['console.command']
-
-  # Registrar servicios del bundle
-  Estratos\DomainNameApi\:
-    resource: '%kernel.project_dir%/vendor/estratos/domainname-api/src/*'
-    exclude: '%kernel.project_dir%/vendor/estratos/domainname-api/src/{Entity,Repository,Tests,Kernel.php}'

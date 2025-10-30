@@ -1,4 +1,3 @@
-# DomainName API Configuration
 domain_name_api:
   username: '%env(DOMAINNAME_API_USERNAME)%'
   password: '%env(DOMAINNAME_API_PASSWORD)%'
