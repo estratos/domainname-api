@@ -1,0 +1,16 @@
+{
+  "bundles": {
+    "Estratos\\DomainNameApi\\DomainNameApiBundle": ["all"]
+  },
+  "copy-from-recipe": {
+    "config/": "%CONFIG_DIR%/",
+    "src/": "%SRC_DIR%/"
+  },
+  "env": {
+    "DOMAINNAME_API_USERNAME": "your_username_here",
+    "DOMAINNAME_API_PASSWORD": "your_password_here",
+    "DOMAINNAME_API_TEST_MODE": "false"
+  },
+  "aliases": ["domainname", "domain-api", "domain-registrar"],
+  "docs": "https://github.com/estratos/domainname-api/blob/main/README.md"
+}
