@@ -18,7 +18,7 @@ class DomainBalanceCommand extends Command
     public function __construct(
         private DomainNameApiClient $apiClient
     ) {
-        parent::__construct(); // CORREGIDO: sin argumentos
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
