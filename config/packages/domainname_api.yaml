@@ -1,0 +1,40 @@
+# DomainName API Configuration
+domainname_api:
+  # Credenciales de la API (configuradas via environment variables)
+  username: '%env(DOMAINNAME_API_USERNAME)%'
+  password: '%env(DOMAINNAME_API_PASSWORD)%'
+  
+  # Modo de pruebas (true para testing, false para producción)
+  test_mode: '%env(bool:DOMAINNAME_API_TEST_MODE)%'
+  
+  # Timeout de las peticiones en segundos
+  timeout: 30
+  
+  # Nameservers por defecto
+  default_nameservers:
+    - 'ns1.domainnameapi.com'
+    - 'ns2.domainnameapi.com'
+
+# Configuración de servicios
+services:
+  # Servicio principal
+  Estratos\DomainNameApi\Service\DomainNameApiClient:
+    arguments:
+      $username: '%env(DOMAINNAME_API_USERNAME)%'
+      $password: '%env(DOMAINNAME_API_PASSWORD)%'
+      $testMode: '%env(bool:DOMAINNAME_API_TEST_MODE)%'
+    public: true
+
+  # Alias para facilitar el uso
+  domainname_api.client:
+    alias: Estratos\DomainNameApi\Service\DomainNameApiClient
+    public: true
+
+  # Servicio de utilidades
+  Estratos\DomainNameApi\Service\DomainNameApiUtils:
+    public: true
+
+  # Registrar comandos
+  Estratos\DomainNameApi\Command\:
+    resource: '../src/Command/*'
+    tags: ['console.command']
