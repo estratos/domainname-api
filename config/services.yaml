@@ -1,0 +1,28 @@
+services:
+  # Servicio principal del cliente API
+  Estratos\DomainNameApi\Service\DomainNameApiClient:
+    arguments:
+      $username: '%env(DOMAINNAME_API_USERNAME)%'
+      $password: '%env(DOMAINNAME_API_PASSWORD)%'
+      $testMode: '%env(bool:DOMAINNAME_API_TEST_MODE)%'
+    public: true
+    tags: ['domainname_api.client']
+
+  # Alias para facilitar el uso
+  domainname_api.client:
+    alias: Estratos\DomainNameApi\Service\DomainNameApiClient
+    public: true
+
+  # Servicio de utilidades
+  Estratos\DomainNameApi\Service\DomainNameApiUtils:
+    public: true
+
+  # Inyectar automáticamente en los controladores
+  Estratos\DomainNameApi\Controller\:
+    resource: '../src/Controller/'
+    tags: ['controller.service_arguments']
+
+  # Registrar comandos de consola
+  Estratos\DomainNameApi\Command\:
+    resource: '../src/Command/'
+    tags: ['console.command']
