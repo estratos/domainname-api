@@ -1,16 +1,9 @@
 # DomainName API Configuration
-domainname_api:
-  # Credenciales de la API (configuradas via environment variables)
+domain_name_api:
   username: '%env(DOMAINNAME_API_USERNAME)%'
   password: '%env(DOMAINNAME_API_PASSWORD)%'
-  
-  # Modo de pruebas (true para testing, false para producción)
   test_mode: '%env(bool:DOMAINNAME_API_TEST_MODE)%'
-  
-  # Timeout de las peticiones en segundos
   timeout: 30
-  
-  # Nameservers por defecto
   default_nameservers:
     - 'ns1.domainnameapi.com'
     - 'ns2.domainnameapi.com'

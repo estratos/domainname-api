@@ -6,9 +6,10 @@ services:
   # Servicio principal del cliente API
   Estratos\DomainNameApi\Service\DomainNameApiClient:
     arguments:
-      $username: '%env(DOMAINNAME_API_USERNAME)%'
-      $password: '%env(DOMAINNAME_API_PASSWORD)%'
-      $testMode: '%env(bool:DOMAINNAME_API_TEST_MODE)%'
+      $username: ''
+      $password: ''
+      $testMode: false
+      $config: []
     public: true
 
   # Alias para facilitar el uso
@@ -20,12 +21,12 @@ services:
   Estratos\DomainNameApi\Service\DomainNameApiUtils:
     public: true
 
-  # Registrar comandos de consola - CORREGIDO: usar ruta absoluta
+  # Registrar comandos de consola
   Estratos\DomainNameApi\Command\:
     resource: '%kernel.project_dir%/vendor/estratos/domainname-api/src/Command'
     tags: ['console.command']
 
-  # Registrar servicios del bundle - CORREGIDO: usar ruta absoluta
+  # Registrar servicios del bundle
   Estratos\DomainNameApi\:
     resource: '%kernel.project_dir%/vendor/estratos/domainname-api/src/*'
     exclude: '%kernel.project_dir%/vendor/estratos/domainname-api/src/{Entity,Repository,Tests,Kernel.php}'

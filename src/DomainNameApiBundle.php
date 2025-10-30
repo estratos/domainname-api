@@ -16,20 +16,19 @@ class DomainNameApiBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        // Cargar servicios
         $container->import('../config/services.yaml');
 
-        // Configurar parámetros
-        $builder->setParameter('domainname_api.username', $config['username']);
-        $builder->setParameter('domainname_api.password', $config['password']);
-        $builder->setParameter('domainname_api.test_mode', $config['test_mode']);
-        $builder->setParameter('domainname_api.timeout', $config['timeout']);
-
-        // Definir servicio principal con parámetros
+        // Configurar el servicio principal con los parámetros
         $container->services()
             ->get(Estratos\DomainNameApi\Service\DomainNameApiClient::class)
             ->arg('$username', $config['username'])
             ->arg('$password', $config['password'])
-            ->arg('$testMode', $config['test_mode']);
+            ->arg('$testMode', $config['test_mode'])
+            ->arg('$config', [
+                'timeout' => $config['timeout'],
+                'default_nameservers' => $config['default_nameservers'],
+            ]);
     }
 
     public function getPath(): string
