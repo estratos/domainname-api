@@ -8,7 +8,7 @@ A Symfony bundle for integrating with DomainName API domain registration service
 
 ```bash
 composer require estratos/domainname-api
-
+```
 Update your .env file:
 
 env
