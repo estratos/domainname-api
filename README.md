@@ -12,7 +12,7 @@ A comprehensive Symfony bundle for integrating DomainNameAPI / DomainResellerAPI
 
 ## 🚀 Features
 
-### Current (v1.0)
+### Current (v2.0)
 
 - ✅ **Domain Availability Check** - Check if a domain is available for registration
 - ✅ **Domain Registration** - Register new domains with contact information
@@ -25,7 +25,7 @@ A comprehensive Symfony bundle for integrating DomainNameAPI / DomainResellerAPI
 - ✅ **REST Controllers** - Ready-to-use API endpoints
 - ✅ **Architecture** - Clean architecture with Ports & Adapters
 
-### Roadmap (v1.1+)
+### Roadmap (v2.1+)
 
 - 🔄 Domain Renewal
 - 🔄 Domain Transfer
