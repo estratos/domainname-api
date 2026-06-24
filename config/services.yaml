@@ -3,24 +3,66 @@ services:
     autowire: true
     autoconfigure: true
 
-  # Servicio principal del cliente API - NOMBRE CORREGIDO
-  Estratos\DomainNameApi\Service\DomainNameApiClient:
+  # ============================================
+  # Cliente REST
+  # ============================================
+  Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient:
     arguments:
-      $username: '%domainname_api.username%'
-      $password: '%domainname_api.password%'
-      $testMode: '%domainname_api.test_mode%'
+      $apiKey: '%domainname_api.api_key%'
+      $resellerId: '%domainname_api.reseller_id%'
+      $endpoint: '%domainname_api.rest.endpoint%'
+      $verifySsl: '%domainname_api.rest.verify_ssl%'
+      $timeout: '%domainname_api.rest.timeout%'
+
+  # ============================================
+  # Proveedor REST (NUEVO)
+  # ============================================
+  Estratos\DomainNameApi\Infrastructure\Provider\RestProvider:
+    arguments:
+      $client: '@Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient'
+      $config:
+        default_nameservers: '%domainname_api.default_nameservers%'
+
+  # ============================================
+  # Proveedor SOAP (Legacy)
+  # ============================================
+  Estratos\DomainNameApi\Infrastructure\Provider\SoapProvider:
+    arguments:
+      $client: '@Estratos\DomainNameApi\Service\DomainNameApiClient'
+
+  # ============================================
+  # Provider por defecto (seleccionable)
+  # ============================================
+  Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface:
+    alias: '%domainname_api.provider_service%'
     public: true
 
-  # Alias para facilitar el uso
-  domainname_api.client:
-    alias: Estratos\DomainNameApi\Service\DomainNameApiClient
-    public: true
+  # Alias para providers
+  domainname_api.provider.rest:
+    alias: Estratos\DomainNameApi\Infrastructure\Provider\RestProvider
 
-  # Servicio de utilidades
-  Estratos\DomainNameApi\Service\DomainNameApiUtils:
-    public: true
+  domainname_api.provider.soap:
+    alias: Estratos\DomainNameApi\Infrastructure\Provider\SoapProvider
 
-  # Registrar comandos de consola
+  # ============================================
+  # Casos de Uso
+  # ============================================
+  Estratos\DomainNameApi\Application\UseCase\CheckDomainUseCase: ~
+  Estratos\DomainNameApi\Application\UseCase\RegisterDomainUseCase: ~
+  Estratos\DomainNameApi\Application\UseCase\GetBalanceUseCase: ~
+  Estratos\DomainNameApi\Application\UseCase\ListDomainsUseCase: ~
+  Estratos\DomainNameApi\Application\UseCase\GetTldsUseCase: ~
+
+  # ============================================
+  # Comandos
+  # ============================================
   Estratos\DomainNameApi\Command\:
     resource: '../src/Command'
     tags: ['console.command']
+
+  # ============================================
+  # Controladores
+  # ============================================
+  Estratos\DomainNameApi\Controller\:
+    resource: '../src/Controller'
+    tags: ['controller.service_arguments']
