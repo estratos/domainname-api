@@ -12,7 +12,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('domain_name_api');
-        
+
         $treeBuilder->getRootNode()
             ->addDefaultsIfNotSet()
             ->children()
@@ -22,8 +22,8 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue('rest')
                     ->info('Provider to use (soap or rest)')
                 ->end()
-                
-                // REST API Configuration (NUEVO)
+
+                // REST API Configuration
                 ->scalarNode('api_key')
                     ->defaultValue('%env(DOMAINNAME_API_KEY)%')
                     ->info('REST API Key')
@@ -54,7 +54,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                
+
                 // SOAP API Configuration (Legacy)
                 ->scalarNode('username')
                     ->defaultValue('%env(DOMAINNAME_API_USERNAME)%')
@@ -68,7 +68,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultFalse()
                     ->info('Enable test mode for SOAP')
                 ->end()
-                
+
                 // General configuration
                 ->integerNode('timeout')
                     ->defaultValue(30)
@@ -81,7 +81,7 @@ class Configuration implements ConfigurationInterface
                     ->info('Default nameservers for domain registration')
                 ->end()
             ->end();
-        
+
         return $treeBuilder;
     }
 }

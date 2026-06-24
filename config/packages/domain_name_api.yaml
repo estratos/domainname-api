@@ -1,0 +1,23 @@
+domain_name_api:
+    # Provider selection (rest | soap)
+    provider: '%env(DOMAINNAME_API_PROVIDER)%'
+    
+    # REST API
+    api_key: '%env(DOMAINNAME_API_KEY)%'
+    reseller_id: '%env(DOMAINNAME_RESELLER_ID)%'
+    rest:
+        endpoint: '%env(DOMAINNAME_API_ENDPOINT)%'
+        verify_ssl: true
+        timeout: 30
+        retry_attempts: 3
+    
+    # SOAP API (legacy)
+    username: '%env(DOMAINNAME_API_USERNAME)%'
+    password: '%env(DOMAINNAME_API_PASSWORD)%'
+    test_mode: '%env(bool:DOMAINNAME_API_TEST_MODE)%'
+    
+    # General
+    timeout: 30
+    default_nameservers:
+        - 'ns1.domainnameapi.com'
+        - 'ns2.domainnameapi.com'
