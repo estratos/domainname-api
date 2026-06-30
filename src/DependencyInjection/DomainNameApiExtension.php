@@ -92,14 +92,7 @@ class DomainNameApiExtension extends Extension
             $container->setDefinition('Estratos\DomainNameApi\Command\\' . $name, $def);
         }
 
-        // Controlador
-        $controller = new Definition('Estratos\DomainNameApi\Controller\DomainController');
-        $controller->setArguments([
-            '$serializer' => new Reference('serializer'),
-            '$validator' => new Reference('validator'),
-        ]);
-        $controller->addTag('controller.service_arguments');
-        $container->setDefinition('Estratos\DomainNameApi\Controller\DomainController', $controller);
+        
     }
 
     public function getAlias(): string
