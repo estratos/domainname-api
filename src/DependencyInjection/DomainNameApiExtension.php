@@ -16,9 +16,7 @@ class DomainNameApiExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        // ============================================
-        // PARÁMETROS
-        // ============================================
+        // Parámetros
         $container->setParameter('domainname_api.provider', $config['provider'] ?? 'rest');
         $container->setParameter('domainname_api.api_key', $config['api_key'] ?? '');
         $container->setParameter('domainname_api.reseller_id', $config['reseller_id'] ?? '');
@@ -31,9 +29,7 @@ class DomainNameApiExtension extends Extension
         $container->setParameter('domainname_api.test_mode', $config['test_mode'] ?? false);
         $container->setParameter('domainname_api.default_nameservers', $config['default_nameservers'] ?? ['ns1.domainnameapi.com', 'ns2.domainnameapi.com']);
 
-        // ============================================
-        // REST CLIENT
-        // ============================================
+        // RestClient
         $restClient = new Definition('Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient');
         $restClient->setArguments([
             '$apiKey' => '%domainname_api.api_key%',
@@ -45,54 +41,28 @@ class DomainNameApiExtension extends Extension
         ]);
         $container->setDefinition('Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient', $restClient);
 
-        // ============================================
-        // REST PROVIDER
-        // ============================================
+        // RestProvider
         $restProvider = new Definition('Estratos\DomainNameApi\Infrastructure\Provider\RestProvider');
         $restProvider->setArguments([
             '$client' => new Reference('Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient'),
-            '$config' => [
-                'default_nameservers' => '%domainname_api.default_nameservers%',
-            ],
+            '$config' => ['default_nameservers' => '%domainname_api.default_nameservers%'],
         ]);
         $container->setDefinition('Estratos\DomainNameApi\Infrastructure\Provider\RestProvider', $restProvider);
 
-        // ============================================
-        // SOAP PROVIDER (Legacy)
-        // ============================================
-        $soapProvider = new Definition('Estratos\DomainNameApi\Infrastructure\Provider\SoapProvider');
-        $soapProvider->setArguments([
-            '$client' => new Reference('Estratos\DomainNameApi\Service\DomainNameApiClient'),
-        ]);
-        $container->setDefinition('Estratos\DomainNameApi\Infrastructure\Provider\SoapProvider', $soapProvider);
-
-        // ============================================
-        // DOMAIN PROVIDER INTERFACE (Alias)
-        // ============================================
+        // Alias del provider
         $providerService = $config['provider'] === 'rest'
             ? 'Estratos\DomainNameApi\Infrastructure\Provider\RestProvider'
             : 'Estratos\DomainNameApi\Infrastructure\Provider\SoapProvider';
         
-        $container->setAlias('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface', $providerService)
-            ->setPublic(true);
+        $container->setAlias('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface', $providerService)->setPublic(true);
         $container->setParameter('domainname_api.provider_service', $providerService);
 
-        // ============================================
-        // CASOS DE USO
-        // ============================================
+        // Casos de uso
         $useCases = [
-            'CheckDomainUseCase' => [
-                '$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')
-            ],
-            'GetBalanceUseCase' => [
-                '$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')
-            ],
-            'ListDomainsUseCase' => [
-                '$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')
-            ],
-            'GetTldsUseCase' => [
-                '$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')
-            ],
+            'CheckDomainUseCase' => ['$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')],
+            'GetBalanceUseCase' => ['$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')],
+            'ListDomainsUseCase' => ['$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')],
+            'GetTldsUseCase' => ['$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface')],
             'RegisterDomainUseCase' => [
                 '$provider' => new Reference('Estratos\DomainNameApi\Domain\Contract\DomainProviderInterface'),
                 '$validator' => new Reference('validator'),
@@ -105,28 +75,14 @@ class DomainNameApiExtension extends Extension
             $container->setDefinition('Estratos\DomainNameApi\Application\UseCase\\' . $name, $def);
         }
 
-        // ============================================
-        // COMANDOS
-        // ============================================
+        // Comandos
         $commands = [
-            'CheckDomainCommand' => [
-                '$checkDomainUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\CheckDomainUseCase')
-            ],
-            'GetBalanceCommand' => [
-                '$getBalanceUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\GetBalanceUseCase')
-            ],
-            'ListDomainsCommand' => [
-                '$listDomainsUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\ListDomainsUseCase')
-            ],
-            'RegisterDomainCommand' => [
-                '$registerDomainUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\RegisterDomainUseCase')
-            ],
-            'GetTldsCommand' => [
-                '$getTldsUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\GetTldsUseCase')
-            ],
-            'TestRestConnectionCommand' => [
-                '$restClient' => new Reference('Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient')
-            ],
+            'CheckDomainCommand' => ['$checkDomainUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\CheckDomainUseCase')],
+            'GetBalanceCommand' => ['$getBalanceUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\GetBalanceUseCase')],
+            'ListDomainsCommand' => ['$listDomainsUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\ListDomainsUseCase')],
+            'RegisterDomainCommand' => ['$registerDomainUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\RegisterDomainUseCase')],
+            'GetTldsCommand' => ['$getTldsUseCase' => new Reference('Estratos\DomainNameApi\Application\UseCase\GetTldsUseCase')],
+            'TestRestConnectionCommand' => ['$restClient' => new Reference('Estratos\DomainNameApi\Infrastructure\Http\Client\RestClient')],
         ];
 
         foreach ($commands as $name => $args) {
@@ -136,9 +92,7 @@ class DomainNameApiExtension extends Extension
             $container->setDefinition('Estratos\DomainNameApi\Command\\' . $name, $def);
         }
 
-        // ============================================
-        // CONTROLADORES
-        // ============================================
+        // Controlador
         $controller = new Definition('Estratos\DomainNameApi\Controller\DomainController');
         $controller->setArguments([
             '$serializer' => new Reference('serializer'),
