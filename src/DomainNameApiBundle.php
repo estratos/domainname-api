@@ -13,7 +13,7 @@ class DomainNameApiBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         // Cargar servicios
-        $container->import('../Resources/config/services.yaml');
+        $container->import(__DIR__ . '/Resources/config/services.yaml');
 
         // Configurar parámetros
         $builder->setParameter('domainname_api.provider', $config['provider'] ?? 'rest');
